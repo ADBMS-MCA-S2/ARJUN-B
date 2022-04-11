@@ -1,0 +1,46 @@
+create database co2;
+use co2;
+q1.
+CREATE TABLE T2(a INTEGER, b CHAR(10));
+call addValues(1,'arjun');
+call addValues(2,'thomas');
+call addValues(3,'arun');
+select * from t2;
+q2.
+create table employee(eid int primary key,ename varchar(50) not null,salary int not null,incentive float(0));
+insert into employee values(101,'Rocky',50000,null);
+insert into employee values(110,'Arjun',60000,null);
+select eid,incentive(eid) from employee;
+
+ 
+ 
+ q3.
+ create table book(book_name varchar(50) primary key, author_name varchar(50), price float(0),quantity int);
+ insert into book values('Alchamist','Paulo Coelho',300,100);
+ insert into book values('ULYSSES','James Joyce',500,200);
+ insert into book values('DARKNESS AT NOON','Arthur Koestler',600,300);
+ select * from book;
+ update book set quantity=quantity*2;  
+ 
+ 
+ -------------------------------------------------------------------------
+ 
+ CREATE DEFINER=`root`@`localhost` PROCEDURE `addValues`(i int ,xx varchar(50))
+BEGIN
+insert into T2 values(i,xx);
+END
+-------------------------------------------------------------------------------
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `incentive`(id int) RETURNS int(11)
+BEGIN
+declare
+incen float;
+if(id = 110)
+then
+set incen = 1000;
+else
+set incen = 0;
+end if;
+RETURN incen;
+END
+----------------------------------------------------------------------------
