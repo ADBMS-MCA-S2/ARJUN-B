@@ -1,0 +1,83 @@
+PL/SQL
+1) AIM:
+Given an integer i, write a PL/SQL procedure to insert the tuple (i, 'xxx') into a given relation
+CODE:
+create database studentdb;
+use studentdb;
+create table T2(rollno int,name varchar(10),primary key(rollno));
+call stud('101','Stefi');
+call stud('102','Sreelaya');
+select * from T2;
+STORED PROCEDURE:
+CREATE DEFINER=`root`@`localhost` PROCEDURE `stud`(rollno int,name varchar(10))
+BEGIN
+insert into T2 values(rollno,name);
+END
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+2.AIM: Write a PL/SQL block to calculate the incentive of an employee whose ID is 110
+CODE:
+create database employeedb2;
+use employeedb2;
+create table E1(empid int,empname varchar(10),salary int,primary key(empid));
+insert into E1(empid,empname,salary)values('110','Stefi',2000);
+insert into E1(empid,empname,salary)values('111','Sreelaya',50000);
+select * from E1;
+select empid,empname,insentive(empid) from E1;
+FUNCTION:
+CREATE DEFINER=`root`@`localhost` FUNCTION `insentive`(empid int) RETURNS varchar(20) CHARSET latin1
+BEGIN
+DECLARE i VARCHAR(20);
+IF (empid=110)
+THEN SET i=3000;
+END IF;
+RETURN i ;
+END
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+3.AIM:Create the Book database and do the following: (Consider the attributes based on the question given) book(book_name, author_name, price,quantity) a. Write a query to update the quantity by double in the table book. b. List all the book_name whose price is greater than those of book named "Database for Dummies" c. Retrieve the list of author_name whose first letter is ’a’ along with the book_name and price (Explore more about Like keyword) d. Write a PL/SQL Procedure to find the total number of books of same author
+create database books;
+use books;
+create table book_info(book_name varchar (20),author varchar(20),price int,quantity int);
+insert into book_info values('randamoozham','MT',300,5);
+insert into book_info values('ikigai','hector',500,7);
+insert into book_info values('databse of dummies','xyz',250,7);
+insert into book_info values('wings of flare','APJ',500,7);
+insert into book_info values('oopol','MT',270,3);
+select * from book_info;
+a) set sql_safe_updates=0;
+update book_info set quantity=quantity*2;
+b) select book_name from book_info where price>(select price from book_info where book_name='databse of dummies');
+c) select author,book_name,price from book_info where author like 'a%';
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+4)AIM:Create the Company database with the following tables and do the following: Administration (employee_salary, development _cost, fund_ amount, turn_over,bonus) Emp_details (emp_no, emp_name, DOB, address, doj, mobile_no, dept_no, salary). a. Calculate the total and average salary amount of the employees of each department. b. Display total salary spent for employees. c. Develop a PL/SQL function to display total fund_amount spent by the administration department
+create database company;
+use company;
+CREATE TABLE Admins(emp_sal double, dvlp_cost double, fund_amount double,
+turn_over double,bonus double);
+INSERT INTO Admins VALUES
+(12000,25000,560000,65000,5000),
+(70000,55000,860000,15000,1000),
+(18000,45000,160000,75000,7000),
+(10000,27000,520000,60000,5000),
+(18000,27000,360000,35000,3000);
+CREATE TABLE Emp_details(emp_no int, emp_name varchar(20), DOB date, address varchar(20), doj date, mobile_no int8, dept_no int, salary double);
+INSERT INTO Emp_details VALUES
+(1,"sanal","1999-10-10","Street - 2 xyz","2020-10-10",9865986598,10,12000),
+(2,"afy","1997-10-10","Street - 2 abc","2020-10-10",9865986598,10,12200),
+(3,"don","1996-10-10","Street nhcjn","2020-10-10",9865986598,11,12500),
+(4,"adarsh","1957-10-10","Street jdn","2020-10-10",9865986598,11,17200),
+(5,"vyshnav","1948-10-10","gsffj","2020-10-10",9865986598,12,12090),
+(6,"shibili","1988-10-10","Snsmk","2020-10-10-",9865986598,12,12050);
+a) SELECT dept_no, avg(salary) 'Average salary',sum(salary) 'Total Salary' FROM
+Emp_details GROUP BY dept_no;
+b) SELECT sum(salary) 'SUM OF SALARY' FROM Emp_details;
+c) FUCTION
+CREATE DEFINER=`root`@`localhost` FUNCTION `fund_total`() RETURNS double
+BEGIN
+DECLARE f DOUBLE;
+DECLARE i DOUBLE;
+SELECT SUM(fund_amount) INTO f
+FROM Admins;
+RETURN f;
+END
+FUNCTION CALL
+SELECT fund_total() from Admins LIMIT 1;
