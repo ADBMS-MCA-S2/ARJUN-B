@@ -1,0 +1,73 @@
+use college 
+switched to db college 
+db.studlist.insert({fname:"arjun",lname:"b",gender:"male",dept:"mca",mark:"91",grade:"A",contact:{"ph":9946673258,"loc":"kollam"}});
+WriteResult({ "nInserted" : 1 }) 
+> db.studlist.insert({fname:"alan",lname:"r",gender:"male",dept:"mca",mark:"91",grade:"A+",contact:{"ph":9946678258,"loc":"trivadrum"}});
+WriteResult({ "nInserted" : 1 }) 
+> db.studlist.insert({fname:"gopika",lname:"g",gender:"female",dept:"mcom",mark:"88",grade:"A",contact:{"ph":7746678258,"loc":"kozhikode"}});
+WriteResult({ "nInserted" : 1 }) 
+> db.studlist.insert({fname:"joseph",lname:"saji",gender:"male",dept:"mech",mark:"78",grade:"b",contact:{"ph":5546678258,"loc":"kannur"}});
+WriteResult({ "nInserted" : 1 }) 
+> db.studlist.insert({fname:"thomas",lname:"k",gender:"male",dept:"ec",mark:"98",grade:"A+",contact:{"ph":8846678258,"loc":"wayanad"}});
+WriteResult({ "nInserted" : 1 }) 
+> db.studlist.insert({fname:"ammu",lname:"raj",gender:"female",dept:"civil",mark:"87",grade:"A",contact:{"ph":3346678258,"loc":"kollam"}});
+WriteResult({ "nInserted" : 1 }) 
+> db.studlist.insert({fname:"drishya",lname:"s",gender:"female",dept:"eee",mark:"76",grade:"b+",contact:{"ph":3446678258,"loc":"trivadrum"}});
+WriteResult({ "nInserted" : 1 }) 
+> db.studlist.insert({fname:"amal",lname:"c",gender:"male",dept:"mech",mark:"66",grade:"c+",contact:{"ph":6446678258,"loc":"kasaragod"}});
+WriteResult({ "nInserted" : 1 }) 
+> db.studlist.find({gender:"female",department:"mca"},{fname:1,lname:1,mark:1,_id:0}) > db.studlist.insert({fname:"akhila",lname:"b",gender:"female",dept:"mca",mark:"98",grade:"A+",contact:{"ph":6446678258,"loc":"kottayam"}});
+WriteResult({ "nInserted" :1})
+> db.studlist.insert({fname:"vimal",lname:"b",gender:"male",dept:"mca",mark:"68",grade:"c+",contact:{"ph":2246678258,"loc":"idukki"}});
+WriteResult({ "nInserted" :1})
+1.
+> db.studlist.find({gender:"female",dept:"mca"},{fname:1,lname:1,mark:1,_id:0})
+{ "fname" : "akhila", "lname" : "b", "mark" : "98" }
+2. db.studlist.aggregate([{$match:{"dept":"mca"}},{$group:{_id:0,"fname":{$first:"$fname"},"lname":{$first:"$lname"},"department":{$first:"$dept"},"HighestMark":{$max:"$mark"}}}])
+{ "_id" : 0, "fname" : "arjun", "lname" : "b", "department" : "mca", "HighestMark" : "98" }
+3.
+> db.studlist.find({'grade':'A+','gender':'male'},{_id:0,'fname':1,'lname':1});
+{ "fname" : "alan", "lname" : "r" } { "fname" : "thomas", "lname" : "k" }
+4.
+> db.studlist.find({"dept":"mech"}).sort({"mark":-1}).limit(3).pretty() { "_id" : ObjectId("62963cf44257d56805ea0c3b"), "fname" : "joseph", "lname" : "saji", "gender" : "male", "dept" : "mech", "mark" : "78", "grade" : "b", "contact" : { "ph" : 5546678258, "loc" : "kannur" } } { "_id" : ObjectId("62963e1d4257d56805ea0c3f"), "fname" : "amal",
+"lname" : "c", "gender" : "male", "dept" : "mech", "mark" : "66", "grade" : "c+", "contact" : { "ph" : 6446678258, "loc" : "kasaragod" } }
+5. db.studlist.find({mark:{$gt:90},gender:'female'},{fname:1,lname:1,mark:1,contact:1,grade:1})
+{
+"_id" : ObjectId("62963f2b4257d56805ea0c40"), "fname": "akhila",
+"lname": "b",
+"gender": "female",
+"dept": "mca",
+"mark": "98",
+"grade": "A+",
+"contact": {
+"ph": 6446678258,
+"loc": "kottayam"
+}
+}
+6.
+>db.studlist.find({$and:[{mark:{$gt:80}},{mark:{$lt:90}}]}})
+{
+"fname": "ammu",
+"lname": "raj",
+"gender": "female",
+"dept": "civil",
+"mark": "87",
+"grade": "A",
+"contact": {
+"ph": 3346678258,
+"loc": "kollam"
+}
+}
+7.
+> db.studlist.find({fname:{$regex:'^v'}},{}).pretty()
+{ "_id" : ObjectId("629648b94257d56805ea0c41"), "fname" : "vimal", "lname" : "b", "gender" : "male", "dept" : "mca", "mark" : "68", "grade" : "c+", "contact" : { "ph" : 2246678258, "loc" : "idukki" } }
+8.
+> db.studlist.find({"contact.loc":"kollam"},{}).pretty() { "_id" : ObjectId("62963c1b4257d56805ea0c38"), "fname" : "arjun", "lname" : "b", "gender" : "male", "dept" : "mca", "mark" : "91", "grade" : "A", "contact" : { "ph" : 9946673258,
+"loc" : "kollam" } } { "_id" : ObjectId("62963da44257d56805ea0c3d"), "fname" : "ammu", "lname" : "raj", "gender" : "female", "dept" : "civil", "mark" : "87", "grade" : "A", "contact" : { "ph" : 3346678258, "loc" : "kollam" } }
+9.
+> db.studlist.find({$nor:[{"contact.loc":"kollam"},{"contact.loc":"trivadrum"}]},{}).pretty() { "_id" : ObjectId("62963cb04257d56805ea0c3a"), "fname" : "gopika", "lname" : "g", "gender" : "female", "dept" : "mcom", "mark" : "88", "grade" : "A", "contact" : { "ph" : 7746678258, "loc" : "kozhikode" } } { "_id" : ObjectId("62963cf44257d56805ea0c3b"), "fname" : "joseph", "lname" : "saji",
+"gender" : "male", "dept" : "mech", "mark" : "78", "grade" : "b", "contact" : { "ph" : 5546678258, "loc" : "kannur" } } { "_id" : ObjectId("62963d684257d56805ea0c3c"), "fname" : "thomas", "lname" : "k", "gender" : "male", "dept" : "ec", "mark" : "98", "grade" : "A+", "contact" : { "ph" : 8846678258, "loc" : "wayanad" } } { "_id" : ObjectId("62963e1d4257d56805ea0c3f"), "fname" : "amal", "lname" : "c", "gender" : "male", "dept" : "mech", "mark" : "66", "grade" : "c+", "contact" : { "ph" : 6446678258, "loc" : "kasaragod" } } { "_id" : ObjectId("62963f2b4257d56805ea0c40"),
+"fname" : "akhila", "lname" : "b", "gender" : "female", "dept" : "mca", "mark" : "98", "grade" : "A+", "contact" : { "ph" : 6446678258, "loc" : "kottayam" } } { "_id" : ObjectId("629648b94257d56805ea0c41"), "fname" : "vimal", "lname" : "b", "gender" : "male", "dept" : "mca", "mark" : "68", "grade" : "c+", "contact" : { "ph" : 2246678258, "loc" : "idukki" } }
+10.
+> db.studlist.find({$or:[{"contact.loc":"kollam"},{"contact.loc":"trivadrum"}],gender:"female"},{}).pretty() { "_id" : ObjectId("62963da44257d56805ea0c3d"), "fname" : "ammu", "lname" : "raj", "gender" : "female", "dept" : "civil", "mark" : "87", "grade" : "A", "contact" : {
+"ph" : 3346678258, "loc" : "kollam" } } { "_id" : ObjectId("62963dee4257d56805ea0c3e"), "fname" : "drishya", "lname" : "s", "gender" : "female", "dept" : "eee", "mark" : "76", "grade" : "b+", "contact" : { "ph" : 3446678258, "loc" : "trivadrum" } }
