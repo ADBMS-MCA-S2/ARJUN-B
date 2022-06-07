@@ -1,0 +1,14 @@
+create database employees;
+use employees;
+create table employee(emp_id int,emp_name varchar(20),dept varchar(20));
+insert into employee values(101,"arjun","mca");
+insert into employee values(102,"ammu","mca");
+insert into employee values(103,"Raimi","btech");
+select * from employee;
+create table dept_mca(id int,dept_name varchar(20),dept_emp varchar(20));
+create table dept_cs(id int,dept_name varchar(20),dept_emp varchar(20));
+select * from employee;
+insert into employee values(105,"Anu","mca");
+select * from dept_mca;
+insert into employee values(106,"R0se","CS");
+select * from dept_cs;
