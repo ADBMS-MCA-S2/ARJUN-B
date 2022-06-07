@@ -1,0 +1,9 @@
+CREATE DEFINER=`root`@`localhost` FUNCTION `travel`(novaccine INT) RETURNS varchar(20) CHARSET utf8mb4
+BEGIN
+if (novaccine=2)
+then
+return ('eligible for going abroad');
+else
+return ('not eligible for going abroad');
+end if;
+END
