@@ -1,0 +1,84 @@
+show dbs
+Employee   0.000GB
+admin      0.000GB
+candidate  0.000GB
+college    0.000GB
+config     0.000GB
+local      0.000GB
+student    0.000GB
+> use student
+switched to db student
+> show collections
+students
+> show users
+> db.createUser({user:"arjun",pwd:"arjunb79",roles:[{role:"readWrite",db:"student"}]})
+Successfully added user: {
+        "user" : "arjun",
+        "roles" : [
+                {
+                        "role" : "readWrite",
+                        "db" : "student"
+                }
+        ]
+}
+> show users
+{
+        "_id" : "student.arjun",
+        "userId" : UUID("cb3e133e-70cc-4e60-a99a-bbf2b2377605"),
+        "user" : "arjun",
+        "db" : "student",
+        "roles" : [
+                {
+                        "role" : "readWrite",
+                        "db" : "student"
+                }
+        ],
+        "mechanisms" : [
+                "SCRAM-SHA-1",
+                "SCRAM-SHA-256"
+        ]
+}
+ show roles
+{
+        "role" : "userAdmin",
+        "db" : "student",
+        "isBuiltin" : true,
+        "roles" : [ ],
+        "inheritedRoles" : [ ]
+}
+{
+        "role" : "dbAdmin",
+        "db" : "student",
+        "isBuiltin" : true,
+        "roles" : [ ],
+        "inheritedRoles" : [ ]
+}
+{
+        "role" : "read",
+        "db" : "student",
+        "isBuiltin" : true,
+        "roles" : [ ],
+        "inheritedRoles" : [ ]
+}
+{
+        "role" : "readWrite",
+        "db" : "student",
+        "isBuiltin" : true,
+        "roles" : [ ],
+        "inheritedRoles" : [ ]
+}
+{
+        "role" : "dbOwner",
+        "db" : "student",
+        "isBuiltin" : true,
+        "roles" : [ ],
+        "inheritedRoles" : [ ]
+}
+{
+        "role" : "enableSharding",
+        "db" : "student",
+        "isBuiltin" : true,
+        "roles" : [ ],
+        "inheritedRoles" : [ ]
+}
+>
