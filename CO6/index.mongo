@@ -1,0 +1,133 @@
+> use college
+switched to db college
+> db.student.insert({name:"arjun",regno:101,mark:[{maths:90,physics:75,se:85,de:85}]})
+WriteResult({ "nInserted" : 1 })
+> db.student.insert({name:"alan",regno:102,mark:[{maths:80,physics:65,se:75,de:75}]})
+WriteResult({ "nInserted" : 1 })
+> db.student.insert({name:"ammu",regno:103,mark:[{maths:90,physics:88,se:70,de:98}]})
+WriteResult({ "nInserted" : 1 })
+> db.student.insert({name:"sanal",regno:104,mark:[{maths:94,physics:78,se:86,de:87}]})
+WriteResult({ "nInserted" : 1 })
+> db.student.insert({name:"gopi",regno:105,mark:[{maths:82,physics:68,se:81,de:87}]})
+WriteResult({ "nInserted" : 1 })
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+single field index
+
+> db.student.getIndexes()
+[ { "v" : 2, "key" : { "_id" : 1 }, "name" : "_id_" } ]
+> db.student.createIndex({regno:1})
+{
+        "numIndexesBefore" : 1,
+        "numIndexesAfter" : 2,
+        "createdCollectionAutomatically" : false,
+        "ok" : 1
+}
+> db.student.getIndexes()
+[
+        {
+                "v" : 2,
+                "key" : {
+                        "_id" : 1
+                },
+                "name" : "_id_"
+        },
+        {
+                "v" : 2,
+                "key" : {
+                        "regno" : 1
+                },
+                "name" : "regno_1"
+        }
+]
+
+> db.student.dropIndex({regno:1})
+{ "nIndexesWas" : 2, "ok" : 1 }
+> db.student.getIndexes()
+[ { "v" : 2, "key" : { "_id" : 1 }, "name" : "_id_" } ]
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+compound index
+ db.student.createIndex({regno:1,name:1})
+{
+        "numIndexesBefore" : 1,
+        "numIndexesAfter" : 2,
+        "createdCollectionAutomatically" : false,
+        "ok" : 1
+}
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+multikey index
+> db.student.createIndex({"mark.maths":1})
+{
+        "numIndexesBefore" : 2,
+        "numIndexesAfter" : 3,
+        "createdCollectionAutomatically" : false,
+        "ok" : 1
+}
+> db.student.getIndexes()
+[
+        {
+                "v" : 2,
+                "key" : {
+                        "_id" : 1
+                },
+                "name" : "_id_"
+        },
+        {
+                "v" : 2,
+                "key" : {
+                        "regno" : 1,
+                        "name" : 1
+                },
+                "name" : "regno_1_name_1"
+        },
+        {
+                "v" : 2,
+                "key" : {
+                        "mark.maths" : 1
+                },
+                "name" : "mark.maths_1"
+        }
+]
+>
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Create a Text Index
+--------------------
+
+> db.comment.createIndex({post:"text"})
+{
+        "numIndexesBefore" : 1,
+        "numIndexesAfter" : 2,
+        "createdCollectionAutomatically" : false,
+        "ok" : 1
+}
+
+> db.comment.getIndexes()
+[
+        {
+                "v" : 2,
+                "key" : {
+                        "_id" : 1
+                },
+                "name" : "_id_"
+        },
+        {
+                "v" : 2,
+                "key" : {
+                        "_fts" : "text",
+                        "_ftsx" : 1
+                },
+                "name" : "post_text",
+                "weights" : {
+                        "post" : 1
+                },
+                "default_language" : "english",
+                "language_override" : "language",
+                "textIndexVersion" : 3
+        }
+]
+
+Search for an Exact Phrase
+--------------------------
+> db.comment.find({$text:{$search:"\"hi\""}})
+{ "_id" : ObjectId("62a074079eba7cc4870640d9"), "name" : "sanku", "post" : "hi" }
+>
