@@ -1,0 +1,106 @@
+> use exam
+switched to db exam
+> db.createCollection("student")
+{ "ok" : 1 }
+> show collections
+student
+> db.student.insert({id:1,name:"Anjali",place:"kollam",phone:8582639562,vaccination_status:"both vaccinated",rtpcr:"negative",lab_mark:{"internal":30,"external":50},department:"mca"})
+WriteResult({ "nInserted" : 1 })
+> db.student.insert({id:2,name:"Anuradha",place:"varkala",phone:9992639562,vaccination_status:"both vaccinated",rtpcr:"negative",lab_mark:{"internal":40,"external":48},department:"civil"})
+WriteResult({ "nInserted" : 1 })
+> db.student.insert({id:3,name:"bismiya",place:"kollam",phone:9446639562,vaccination_status:"not vaccinated",rtpcr:"positive",lab_mark:{"internal":50,"external":39},department:"mca"})
+WriteResult({ "nInserted" : 1 })
+> db.student.insert({id:4,name:"vimal",place:"ernakulam",phone:8582639568,vaccination_status:"first dose only",rtpcr:"positive",lab_mark:{"internal":40,"external":42},department:"civil"})
+WriteResult({ "nInserted" : 1 })
+> db.student.insert({id:5,name:"vivek",place:"kollam",phone:8582639777,vaccination_status:"both vaccinated",rtpcr:"negative",lab_mark:{"internal":50,"external":50},department:"mca"})
+WriteResult({ "nInserted" : 1 })
+> db.student.find().pretty()
+{
+        "_id" : ObjectId("62ce947cf19e9e9e21f52127"),
+        "id" : 1,
+        "name" : "Anjali",
+        "place" : "kollam",
+        "phone" : 8582639562,
+        "vaccination_status" : "both vaccinated",
+        "rtpcr" : "negative",
+        "lab_mark" : {
+                "internal" : 30,
+                "external" : 50
+        },
+        "department" : "mca"
+}
+{
+        "_id" : ObjectId("62ce9505f19e9e9e21f52128"),
+        "id" : 2,
+        "name" : "Anuradha",
+        "place" : "varkala",
+        "phone" : 9992639562,
+        "vaccination_status" : "both vaccinated",
+        "rtpcr" : "negative",
+        "lab_mark" : {
+                "internal" : 40,
+                "external" : 48
+        },
+        "department" : "civil"
+}
+{
+        "_id" : ObjectId("62ce9594f19e9e9e21f52129"),
+        "id" : 3,
+        "name" : "bismiya",
+        "place" : "kollam",
+        "phone" : 9446639562,
+        "vaccination_status" : "not vaccinated",
+        "rtpcr" : "positive",
+        "lab_mark" : {
+                "internal" : 50,
+                "external" : 39
+        },
+        "department" : "mca"
+}
+{
+        "_id" : ObjectId("62ce960ff19e9e9e21f5212a"),
+        "id" : 4,
+        "name" : "vimal",
+        "place" : "ernakulam",
+        "phone" : 8582639568,
+        "vaccination_status" : "first dose only",
+        "rtpcr" : "positive",
+        "lab_mark" : {
+                "internal" : 40,
+                "external" : 42
+        },
+        "department" : "civil"
+}
+{
+        "_id" : ObjectId("62ce966df19e9e9e21f5212b"),
+        "id" : 5,
+        "name" : "vivek",
+        "place" : "kollam",
+        "phone" : 8582639777,
+        "vaccination_status" : "both vaccinated",
+        "rtpcr" : "negative",
+        "lab_mark" : {
+                "internal" : 50,
+                "external" : 50
+        },
+        "department" : "mca"
+}
+q3
+------------------------------------------------------------------------
+> db.student.find({vaccination_status:"both vaccinated"},{name:1,phone:1,_id:0})
+{ "name" : "Anjali", "phone" : 8582639562 }
+{ "name" : "Anuradha", "phone" : 9992639562 }
+{ "name" : "vivek", "phone" : 8582639777 }
+-----------------------------------------------------------------------------------------
+q4
+----------------------------------------------------------------------------------------------
+> db.student.find({department:"mca"},{name:1,phone:1,_id:0}).sort({"lab_mark.external":-1}).limit(2)
+{ "name" : "vivek", "phone" : 8582639777 }
+{ "name" : "Anjali", "phone" : 8582639562 }
+--------------------------------------------------------------------------------------------------
+q5
+-----------------------------------------------------------------------------------------------
+> db.student.find({name:{$regex:"^A"}},{name:1,_id:0,department:1,id:1})
+{ "id" : 1, "name" : "Anjali", "department" : "mca" }
+{ "id" : 2, "name" : "Anuradha", "department" : "civil" }
+>
